@@ -7,6 +7,15 @@ CURRENCY_CODE = [
     ('EUR', 'Евро'),
 ]
 
+VALUE = [
+    ('Штука', 'шт'),
+    ('Литр', 'л'),
+    ('Бутылка', 'бут'),
+    ('Килограмм', 'кг'),
+    ('Пара', 'пар'),
+    ('Пачка', 'пачка'),
+]
+
 
 class Category(models.Model):
     name = models.CharField(max_length=20)
@@ -34,13 +43,12 @@ class Expense(models.Model):
 
 
 class Relativity(models.Model):
-    VALUE = [
-        ('Штука', 'шт'),
-        ('Литр', 'л'),
-        ('Бутылка', 'бут'),
-        ('Килограмм', 'кг'),
-        ('Пара', 'пар'),
-    ]
     name = models.CharField(max_length=50, choices=VALUE)
     amount = models.FloatField(default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_relativity')
+
+
+class Client(models.Model):
+    salary_day = models.IntegerField(default=1)
+    created = models.CharField(max_length=50)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_client')

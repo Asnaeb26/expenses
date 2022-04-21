@@ -1,25 +1,20 @@
 from rest_framework import serializers
-from .models import Income, Expense, Relativity, Category
+from . import models
 
 
 class IncomeSerializer(serializers.ModelSerializer):
-    # category = serializers.StringRelatedField()
-
     class Meta:
-        model = Income
+        model = models.Income
         fields = '__all__'
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
-    category = serializers.StringRelatedField(read_only=True)
-
     class Meta:
-        model = Expense
+        model = models.Expense
         fields = '__all__'
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Category
+        model = models.Category
         fields = '__all__'
-
