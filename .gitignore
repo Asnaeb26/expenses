@@ -1,0 +1,6 @@
+#.idea
+#venv
+#htmlcov
+#__pycache__/
+#expenses.sock
+#uwsgi-emperor.log
