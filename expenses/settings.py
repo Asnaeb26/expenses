@@ -76,10 +76,10 @@ WSGI_APPLICATION = 'expenses.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'expensesDB',
-        'USER': 'user_ilya',
-        'PASSWORD': '123456789Cc!',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'expensesdb',
+        'USER': 'postgres',
+        'PASSWORD': '123456789Cc',
         'HOST': 'localhost',
         # 'PORT': 'portNumber',
     }
