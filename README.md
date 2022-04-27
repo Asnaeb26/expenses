@@ -1,4 +1,4 @@
-<i>Бэкэнд выполнялся под данный <a href="https://github.com/alexeyShuncko/app-expenses">React проект</a></i><br>
+<i>Бэкэнд выполнялся под данный готовый <a href="https://github.com/alexeyShuncko/app-expenses">React проект</a></i><br>
 <h1>Список доступных API</h1>
 <h2>Доходы</h2>
 <p>Список всех источников дохода. Доступные методы (GET, POST)</p>
