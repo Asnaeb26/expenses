@@ -1,21 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>API</title>
-    <style type="text/css">
-        .api {
-            background: wheat;
-            font-size: 15px;
-            padding: 10px 20px;
-        }
-        .code {
-            background: #c9c9c9;
-            padding: 10px 20px;
-        }
-    </style>
-</head>
-<body>
 <h1>Список доступных API</h1>
 <h2>Доходы</h2>
 <p>Список всех источников дохода. Доступные методы (GET, POST)</p>
@@ -84,5 +66,3 @@
         "amount: 3.5
     }
 </pre>
-</body>
-</html>
