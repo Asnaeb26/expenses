@@ -31,8 +31,8 @@ class Income(models.Model):
 
 class ExpenseCategory(models.Model):
     name = models.CharField(max_length=20)
+    nameRusСase = models.CharField(max_length=20)
     color = models.CharField(max_length=50)  # цвет в формате #01FA22
-
     # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_category')
 
     def __str__(self):

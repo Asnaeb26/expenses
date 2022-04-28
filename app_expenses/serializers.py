@@ -41,7 +41,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ExpenseCategory
-        fields = ('id', 'name', 'color', 'data')
+        fields = ('id', 'name', 'nameRusСase', 'color', 'data')
 
 
 # ________________________________________________________________________
