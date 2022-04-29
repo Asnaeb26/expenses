@@ -14,7 +14,7 @@ urlpatterns = [
     path('api/', include(category_router.urls)),
     path('api/', include(sources_router.urls)),
     path('api/relativity/', views.SetRelativity.as_view()),
-    path('api/set-day/', views.SetSalaryDay.as_view()),
+    path('api/set-data/', views.SetSalaryData.as_view()),
     path('api/incomes/', views.AllIncomesViewSet.as_view({'get': 'list', 'post': 'create'})),
     path('api/expenses/', views.AllExpensesViewSet.as_view({'get': 'list', 'post': 'create'})),
 ]

@@ -4,8 +4,6 @@ from .models import *
 
 
 class IncomeSerializer(serializers.ModelSerializer):
-    # category = serializers.PrimaryKeyRelatedField(read_only=True)
-    # category = serializers.IntegerField(write_only=True)
     class Meta:
         model = Income
         fields = '__all__'
@@ -46,12 +44,45 @@ class CategorySerializer(serializers.ModelSerializer):
 
 # ________________________________________________________________________
 class ClientSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Client
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ('id',)
+
+    def create(self, validated_data):
+        return Client.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.salary_day = validated_data.get('salary_day', instance.salary_day)
+        instance.salary_month = validated_data.get('salary_month', instance.salary_month)
+        instance.source = validated_data.get('source', instance.source)
+        instance.save()
+        return instance
+
+
+class RelativityCaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RelativeCase
+        exclude = ('id', 'relativity',)
 
 
 class RelativitySerializer(serializers.ModelSerializer):
+    case = RelativityCaseSerializer()
+
     class Meta:
         model = Relativity
-        fields = '__all__'
+        # fields = '__all__'
+        fields = ('id', 'name', 'value', 'amount', 'case',)
+
+    def create(self, validated_data):
+        cases_date = validated_data.pop('case')
+        name = validated_data.get('name')
+        if Relativity.objects.count() != 0:
+            Relativity.objects.update(**validated_data)
+            relativity = Relativity.objects.get(name=name)
+            RelativeCase.objects.update(relativity=relativity, **cases_date)
+        else:
+            relativity = Relativity.objects.create(**validated_data)
+            RelativeCase.objects.create(relativity=relativity, **cases_date)
+        return relativity

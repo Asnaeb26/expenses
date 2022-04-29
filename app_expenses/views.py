@@ -42,21 +42,26 @@ class AllExpensesViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, Generic
         return Response(serializer.data, status=HTTP_201_CREATED)
 
 
-class SetSalaryDay(APIView):
+class SetSalaryData(APIView):
     def get(self, request):
         queryset = Client.objects.all()
         serializer = serializers.ClientSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def post(self, request):
-        income_id = request.data.get('source')
-        salary_day = request.data.get('salary_day')
-        obj, _ = Client.objects.update_or_create(
-            source_id=income_id,
-            defaults={'salary_day': salary_day},
-        )
-        serializer = serializers.ClientSerializer(obj)
-        return Response(serializer.data, status=HTTP_200_OK)
+        data = request.data
+        serializer = serializers.ClientSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=HTTP_201_CREATED)
+
+    def put(self, request):
+        data = request.data
+        instance = Client.objects.get(source_id=data.get('source'))
+        serializer = serializers.ClientSerializer(instance, data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=HTTP_201_CREATED)
 
 
 class SetRelativity(APIView):
@@ -65,13 +70,20 @@ class SetRelativity(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        name = request.data.get('name')
-        value = request.data.get('value')
-        amount = request.data.get('amount')
-        if Relativity.objects.count() != 0:
-            Relativity.objects.update(name=name, value=value, amount=amount)
-        else:
-            Relativity.objects.create(name=name, value=value, amount=amount)
-        relativity = Relativity.objects.first()
-        serializer = serializers.RelativitySerializer(relativity)
+        data = request.data
+        serializer = serializers.RelativitySerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response(serializer.data, status=HTTP_200_OK)
+
+    # {
+    #     "name": "Пиво",
+    #     "value": "л",
+    #     "amount": 5.0,
+    #     "case": {
+    #         "name1": "Пива",
+    #         "name2": "Пив",
+    #         "name3": "Пиво"
+    #     }
+    #
+    # }
