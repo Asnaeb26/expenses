@@ -72,7 +72,6 @@ class RelativitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Relativity
-        # fields = '__all__'
         fields = ('id', 'name', 'value', 'amount', 'case',)
 
     def create(self, validated_data):

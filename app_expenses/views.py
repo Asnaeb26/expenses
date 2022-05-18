@@ -75,15 +75,3 @@ class SetRelativity(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=HTTP_200_OK)
-
-    # {
-    #     "name": "Пиво",
-    #     "value": "л",
-    #     "amount": 5.0,
-    #     "case": {
-    #         "name1": "Пива",
-    #         "name2": "Пив",
-    #         "name3": "Пиво"
-    #     }
-    #
-    # }
