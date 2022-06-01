@@ -44,7 +44,6 @@ class CategorySerializer(serializers.ModelSerializer):
 
 # ________________________________________________________________________
 class ClientSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Client
         # fields = '__all__'
@@ -76,12 +75,21 @@ class RelativitySerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         cases_date = validated_data.pop('case')
+        user = self.initial_data.get('user_instance')
+        validated_data['user'] = user
         name = validated_data.get('name')
-        if Relativity.objects.count() != 0:
-            Relativity.objects.update(**validated_data)
-            relativity = Relativity.objects.get(name=name)
-            RelativeCase.objects.update(relativity=relativity, **cases_date)
+        current_rel = Relativity.objects.filter(user_id=user.id)
+        if current_rel.count() != 0:
+            current_rel.update(**validated_data)
+            relativity = current_rel.get(name=name)
+            RelativeCase.objects.filter(relativity=relativity).update(**cases_date)
         else:
             relativity = Relativity.objects.create(**validated_data)
             RelativeCase.objects.create(relativity=relativity, **cases_date)
         return relativity
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'

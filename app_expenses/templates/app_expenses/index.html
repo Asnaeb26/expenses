@@ -19,6 +19,28 @@
 </head>
 <body>
 <h1>Список доступных API</h1>
+<h2>Регистрация пользователя</h2>
+<p>Отправить POST запрос для регистрации нового юзера</p>
+<pre class="api">/auth/users/</pre>
+<pre class="code">
+{
+    "username": "someLogin",
+    "password": "somePass",
+    "email": "somemail@mail.ru"
+}
+</pre>
+<p>Отправить POST запрос для создания JWT токена для данного юзера</p>
+<pre class="api">/auth/jwt/create/</pre>
+<pre class="code">
+{
+    "username": "someLogin",
+    "password": "somePass",
+    "email": "somemail@mail.ru"  # здесь не обязательно
+}
+</pre>
+<p>Для аутентификации в заголовке отправить поле <b>Authorization</b> значение </p>
+<pre class="api">Bearer < JWT_токен_юзера > </pre>
+
 <h2>Доходы</h2>
 <p>Список всех источников дохода. Доступные методы (GET, POST)</p>
 <pre class="api">/api/sources/</pre>
@@ -26,7 +48,7 @@
 <pre class="api">/api/sources/< id >/</pre>
 <p>Чтобы посмотреть/создать доход. Доступные методы (GET, POST)</p>
 <pre class="api">/api/incomes/</pre>
-<p>Структура пост запроса для сохранения дохода должны примерно быть такой:</p>
+<p>Структура пост запроса для сохранения дохода должны быть примерно такой:</p>
 <pre class="code">
     {
         "created": "2022-04-25",
@@ -90,7 +112,6 @@
             "name2": "Пив",
             "name3": "Пиво"
         }
-
     }
 </pre>
 </body>
