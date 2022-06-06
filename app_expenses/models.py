@@ -3,13 +3,20 @@ from django.db import models
 
 
 # ---------------------Incomes-----------------------------------
+# class BlackListedToken(models.Model):
+#     token = models.CharField(max_length=500)
+#     user = models.ForeignKey(User, related_name="token_user", on_delete=models.CASCADE)
+#     timestamp = models.DateTimeField(auto_now=True)
+#
+#     class Meta:
+#         unique_together = ("token", "user")
 
 
 class IncomeCategory(models.Model):
     name = models.CharField(max_length=20)
     color = models.CharField(max_length=50)  # цвет в формате #01FA22
 
-    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_source')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_source')
 
     def __str__(self):
         return self.name
@@ -31,10 +38,10 @@ class Income(models.Model):
 
 class ExpenseCategory(models.Model):
     name = models.CharField(max_length=20)
-    nameRusСase = models.CharField(max_length=20)
+    nameRusCase = models.CharField(max_length=20)
     color = models.CharField(max_length=50)  # цвет в формате #01FA22
 
-    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_category')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_category')
 
     def __str__(self):
         return self.name

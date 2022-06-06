@@ -38,6 +38,14 @@
     "email": "somemail@mail.ru"  # здесь не обязательно
 }
 </pre>
+
+<p>Для верификации токена необходимо</p>
+<pre class="api">/auth/jwt/verify/ </pre>
+<pre class="code">
+{
+    "token": "< тут токен >"
+}
+</pre>
 <p>Для аутентификации в заголовке отправить поле <b>Authorization</b> значение </p>
 <pre class="api">Bearer < JWT_токен_юзера > </pre>
 
@@ -50,43 +58,50 @@
 <pre class="api">/api/incomes/</pre>
 <p>Структура пост запроса для сохранения дохода должны быть примерно такой:</p>
 <pre class="code">
-    {
-        "created": "2022-04-25",
-        "amount": 100,
-        "category": 1
-    }
+{
+    "created": "2022-04-25",
+    "amount": 100,
+    "category": 1
+}
 </pre>
 <h2>Расходы</h2>
 <p>Чтобы посмотреть список всех категорий с расходами или создать новую категорию. Доступные методы (GET, POST)</p>
 <pre class="api">/api/categories/</pre>
+<pre class="code">
+{
+    "name": "",
+    "nameRusCase": "",
+    "color": ""
+}
+</pre>
 <p>Чтобы изменить/удалить категорию расходов c требуемой id. Доступные методы (GET, PUT, DELETE, OPTIONS)</p>
 <pre class="api">/api/categories/< id >/</pre>
 <p>Чтобы добавить сразу несколько затрат или посмотреть все затраты. Доступные методы (GET, POST)</p>
 <pre class="api">/api/expenses/</pre>
 <p>Структура пост запроса для сохранения расходов должны примерно быть такой:</p>
 <pre class="code">
+{
+  "data": [
     {
-      "data": [
-        {
-          "created": "2022-04-25",
-          "amount": 1000,
-          "currency": "BYN",
-          "category": 1
-        },
-        {
-          "created": "2022-04-25",
-          "amount": 100,
-          "currency": "BYN",
-          "category": 2
-        },
-        {
-          "created": "2022-04-25",
-          "amount": 290,
-          "currency": "BYN",
-          "category": 3
-        }
-      ]
+      "created": "2022-04-25",
+      "amount": 1000,
+      "currency": "BYN",
+      "category": 1
+    },
+    {
+      "created": "2022-04-25",
+      "amount": 100,
+      "currency": "BYN",
+      "category": 2
+    },
+    {
+      "created": "2022-04-25",
+      "amount": 290,
+      "currency": "BYN",
+      "category": 3
     }
+  ]
+}
 </pre>
 
 <p>Чтобы посмотреть/сохранить/изменить дату дохода. Доступные методы (GET, POST, PUT)</p>

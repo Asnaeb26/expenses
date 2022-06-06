@@ -1,27 +1,58 @@
-import json
-
 from django.shortcuts import render
 from .models import *
 from . import serializers
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.views import Response, APIView
-from rest_framework.status import HTTP_201_CREATED, HTTP_200_OK
+from rest_framework.status import HTTP_201_CREATED, HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN
 from rest_framework import permissions
 from app_expenses import logic
 from rest_framework import mixins
-from django.contrib.auth import authenticate, login, logout
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 def index(request):
     return render(request, 'app_expenses/index.html')
 
 
+# class Logout(APIView):
+#     def post(self, request):
+#         token = RefreshToken(request.auth)
+#         token.blacklist()
+#         return Response({"message": "юзер не залогинен"}, status=HTTP_200_OK)
+#
+#
+# class Login(APIView):
+#     permission_classes = (permissions.AllowAny, )
+#
+#     def post(self, request):
+#         username = request.data.get('username')
+#         token = request.auth
+#         user = User.objects.get(username=username)
+#         if user:
+#             token.check_blacklist()
+#             return Response({"OK": "OKOKOKOKOKOKO"})
+#         else:
+#             return Response({"sss": "fdfdfdf"})
+
+
 class SourceViewSet(ModelViewSet):
     """Список всех категорий пользователя"""
-    queryset = IncomeCategory.objects.all()
+    # queryset = IncomeCategory.objects.all()
     serializer_class = serializers.SourceSerializer
     lookup_field = 'id'
-    permission_classes = permissions.IsAuthenticated
+
+    # permission_classes = permissions.IsAuthenticated
+
+    def get_queryset(self):
+        return IncomeCategory.objects.filter(user_id=self.request.user.id)
+
+    def create(self, request, *args, **kwargs):
+        category = request.data
+        category['user_id'] = request.user.id
+        serializer = serializers.SourceSerializer(data=category)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=HTTP_200_OK)
 
 
 # class AllIncomesViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSet):
@@ -42,9 +73,20 @@ class AllIncomesViewSet(ModelViewSet):
 
 class CategoryViewSet(ModelViewSet):
     """Список категорий затрат"""
-    queryset = ExpenseCategory.objects.all()
+    # queryset = ExpenseCategory.objects.all()
     serializer_class = serializers.CategorySerializer
     lookup_field = 'pk'
+
+    def get_queryset(self):
+        return ExpenseCategory.objects.filter(user_id=self.request.user.id)
+
+    def create(self, request, *args, **kwargs):
+        category = request.data
+        category['user_id'] = request.user.id
+        serializer = serializers.CategorySerializer(data=category)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=HTTP_200_OK)
 
 
 # class AllExpensesViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSet):
@@ -71,6 +113,7 @@ class SetSalaryData(APIView):
 
     def post(self, request):
         data = request.data
+        data['user'] = request.user.id
         serializer = serializers.ClientSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -87,7 +130,8 @@ class SetSalaryData(APIView):
 
 class SetRelativity(APIView):
     def get(self, request):
-        serializer = serializers.RelativitySerializer(Relativity.objects.get(user_id=request.user))
+        relativity = Relativity.objects.get(user_id=request.user)
+        serializer = serializers.RelativitySerializer(relativity)
         return Response(serializer.data)
 
     def post(self, request):

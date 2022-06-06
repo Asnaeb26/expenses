@@ -22,6 +22,11 @@ class SourceSerializer(serializers.ModelSerializer):
         model = IncomeCategory
         fields = ('id', 'name', 'color', 'data',)
 
+    def create(self, validated_data):
+        user_id = self.initial_data.get('user_id')
+        validated_data['user_id'] = user_id
+        return IncomeCategory.objects.create(**validated_data)
+
 
 # ______________________________________________________________________
 class ExpenseSerializer(serializers.ModelSerializer):
@@ -39,7 +44,12 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ExpenseCategory
-        fields = ('id', 'name', 'nameRusСase', 'color', 'data')
+        fields = ('name', 'nameRusCase', 'color', 'data')
+
+    def create(self, validated_data):
+        user_id = self.initial_data.get('user_id')
+        validated_data['user_id'] = user_id
+        return ExpenseCategory.objects.create(**validated_data)
 
 
 # ________________________________________________________________________
@@ -47,7 +57,7 @@ class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         # fields = '__all__'
-        exclude = ('id',)
+        exclude = ('id', 'user')
 
     def create(self, validated_data):
         return Client.objects.create(**validated_data)
@@ -56,6 +66,7 @@ class ClientSerializer(serializers.ModelSerializer):
         instance.salary_day = validated_data.get('salary_day', instance.salary_day)
         instance.salary_month = validated_data.get('salary_month', instance.salary_month)
         instance.source = validated_data.get('source', instance.source)
+        instance.user = validated_data.get('user', instance.user)
         instance.save()
         return instance
 
