@@ -145,5 +145,6 @@ class SetRelativity(APIView):
 
 class UserAction(APIView):
     def get(self, request):
-        serializer = serializers.UserSerializer()
+        users = User.objects.all()
+        serializer = serializers.UserSerializer(users, many=True)
         return Response(serializer.data)

@@ -34,6 +34,7 @@ urlpatterns = [
     path('api/relativity/', views.SetRelativity.as_view()),
     # path('api/token/blacklist/', TokenBlacklistView.as_view(), name='token_blacklist'),
     path('api/set-data/', views.SetSalaryData.as_view()),
+    path('api/users/', views.UserAction.as_view()),
     # path('api/incomes/', views.AllIncomesViewSet.as_view({'get': 'list', 'post': 'create'})),
     # path('api/expenses/', views.AllExpensesViewSet.as_view({'get': 'list', 'post': 'create'})),
 ]
