@@ -44,7 +44,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ExpenseCategory
-        fields = ('name', 'nameRusCase', 'color', 'data')
+        fields = ('id', 'name', 'nameRusCase', 'color', 'data')
 
     def create(self, validated_data):
         user_id = self.initial_data.get('user_id')
@@ -56,8 +56,8 @@ class CategorySerializer(serializers.ModelSerializer):
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        # fields = '__all__'
-        exclude = ('id', 'user')
+        fields = '__all__'
+        # exclude = ('id',)
 
     def create(self, validated_data):
         return Client.objects.create(**validated_data)

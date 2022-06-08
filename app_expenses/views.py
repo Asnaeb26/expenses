@@ -105,13 +105,14 @@ class AllExpensesViewSet(ModelViewSet):
         return Response(serializer.data, status=HTTP_201_CREATED)
 
 
-class SetSalaryData(APIView):
-    def get(self, request):
-        queryset = Client.objects.filter(user_id=self.request.user.id)
-        serializer = serializers.ClientSerializer(queryset, many=True)
-        return Response(serializer.data)
+# class SetSalaryData(APIView):
+class SetSalaryData(ModelViewSet):
+    serializer_class = serializers.ClientSerializer
 
-    def post(self, request):
+    def get_queryset(self):
+        return Client.objects.filter(user_id=self.request.user.id)
+
+    def create(self, request, *args, **kwargs):
         data = request.data
         data['user'] = request.user.id
         serializer = serializers.ClientSerializer(data=data)
@@ -119,10 +120,11 @@ class SetSalaryData(APIView):
         serializer.save()
         return Response(serializer.data, status=HTTP_201_CREATED)
 
-    def put(self, request):
+    def update(self, request, *args, **kwargs):
         data = request.data
-        instance = Client.objects.get(source_id=data.get('source'))
-        serializer = serializers.ClientSerializer(instance, data=data)
+        data['user'] = request.user.id
+        ins = Client.objects.get(pk=kwargs['pk'])
+        serializer = serializers.ClientSerializer(instance=ins, data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=HTTP_201_CREATED)
